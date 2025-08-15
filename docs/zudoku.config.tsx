@@ -76,6 +76,7 @@ const config: ZudokuConfig = {
   authentication: {
     type: "openid",
     clientId: "746556571653-gn1ujndgd6mmf462slgrodfhuk32k3mq.apps.googleusercontent.com",
+    clientSecret: "$env(GOOGLE_CLIENT_SECRET)",
     issuer: "https://accounts.google.com",
     scopes: ["openid", "profile", "email"]
   },
