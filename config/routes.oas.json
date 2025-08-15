@@ -1,0 +1,87 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "My Zuplo API"
+  },
+  "paths": {
+    "/v1/models": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "get": {
+        "summary": "Lists the currently available models, and provides basic information about each one such as the owner and availability.",
+        "description": "",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://api.sea-lion.ai/v1"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "rate-limit-inbound",
+              "add-bearer-auth"
+            ]
+          }
+        },
+        "operationId": "117ac212-fa43-4a93-a644-dde275e231d5",
+        "x-internal": false
+      }
+    },
+    "/v1/chat/completions": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "post": {
+        "summary": "Creates a model response for the given chat conversation.",
+        "description": "",
+        "x-zuplo-route": {
+          "corsPolicy": "none",
+          "handler": {
+            "export": "urlForwardHandler",
+            "module": "$import(@zuplo/runtime)",
+            "options": {
+              "baseUrl": "https://api.sea-lion.ai/v1"
+            }
+          },
+          "policies": {
+            "inbound": [
+              "api-key-inbound",
+              "add-bearer-auth"
+            ]
+          }
+        },
+        "operationId": "c6e2aed2-698c-482c-b830-5e6664cfcab2"
+      }
+    },
+    "/v1/developer/api-key": {
+      "x-zuplo-path": {
+        "pathMode": "open-api"
+      },
+      "post": {
+        "summary": "Create API Key",
+        "description": "",
+        "x-zuplo-route": {
+          "corsPolicy": "anything-goes",
+          "handler": {
+            "export": "default",
+            "module": "$import(./modules/create-api-key)",
+            "options": {}
+          },
+          "policies": {
+            "inbound": [
+              "open-id-jwt-auth-inbound"
+            ]
+          }
+        },
+        "operationId": "1748b2dd-2cee-4ca2-a9ad-95eb784e731b",
+        "x-internal": true
+      }
+    }
+  }
+}
