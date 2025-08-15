@@ -74,19 +74,43 @@ const config: ZudokuConfig = {
     },
   ],
   authentication: {
-    // IMPORTANT: This is a demo Auth0 configuration.
-    // In a real application, you should replace these values with your own
-    // identity provider's configuration.
-    // This configuration WILL NOT WORK with custom domains.
-    // For more information, see:
-    // https://zuplo.com/docs/dev-portal/zudoku/configuration/authentication
-    type: "auth0",
-    domain: "auth.zuplo.site",
-    clientId: "f8I87rdsCRo4nU2FHf0fHVwA9P7xi7Ml",
-    audience: "https://api.example.com/",
+    type: "openid",
+    clientId: "746556571653-gn1ujndgd6mmf462slgrodfhuk32k3mq.apps.googleusercontent.com",
+    issuer: "https://accounts.google.com",
+    scopes: ["openid", "profile", "email"]
   },
-  apiKeys: {
+ apiKeys: {
     enabled: true,
+    deploymentName: process.env.ZUPLO_PUBLIC_DEPLOYMENT_NAME, // Note: Only required for local development
+    createKey: async ({ apiKey, context, auth }) => {
+      // process.env.ZUPLO_PUBLIC_SERVER_URL is only required for local development
+      // import.meta.env.ZUPLO_SERVER_URL is automatically set when using a deployed environment, you do not need to set it
+      const serverUrl = process.env.ZUPLO_PUBLIC_SERVER_URL || import.meta.env.ZUPLO_SERVER_URL; 
+      const createApiKeyRequest = new Request(serverUrl + "/v1/developer/api-key", {
+        method: "POST",
+        body: JSON.stringify({
+          ...apiKey,
+          email: auth.profile?.email,
+          metadata: {
+            userId: auth.profile?.sub,
+            name: auth.profile?.name,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const createApiKey = await fetch(
+        await context.signRequest(createApiKeyRequest),
+      );
+
+      if (!createApiKey.ok) {
+        throw new Error("Could not create API Key");
+      } 
+
+      return true;
+    },
   },
 };
 
