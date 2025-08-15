@@ -118,7 +118,7 @@ const config: ZudokuConfig = {
     getConsumers: async (context) => {
       const serverUrl = process.env.ZUPLO_PUBLIC_SERVER_URL || import.meta.env.ZUPLO_SERVER_URL;
       
-      const request = new Request(serverUrl + "/v1/developer/consumers", {
+      const request = new Request(serverUrl + "/v1/developer/get-consumers", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
