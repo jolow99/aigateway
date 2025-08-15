@@ -74,11 +74,13 @@ const config: ZudokuConfig = {
     },
   ],
   authentication: {
-    type: "openid",
-    clientId: "746556571653-gn1ujndgd6mmf462slgrodfhuk32k3mq.apps.googleusercontent.com",
-    clientSecret: "$env(GOOGLE_CLIENT_SECRET)",
-    issuer: "https://accounts.google.com",
-    scopes: ["openid", "profile", "email"]
+    type: "supabase",
+    provider: "google", // or any supported provider
+    supabaseUrl: "https://gyokusiqtjaeofzkkkkd.supabase.co",
+    supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5b2t1c2lxdGphZW9memtra2tkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUyNDcxNzcsImV4cCI6MjA3MDgyMzE3N30.4uxPtnWPAX8_0E8_q45ZfEWzQZ0ZKoiwwyeQYKXrkwQ",
+    redirectToAfterSignUp: "/",
+    redirectToAfterSignIn: "/",
+    redirectToAfterSignOut: "/",
   },
  apiKeys: {
     enabled: true,
