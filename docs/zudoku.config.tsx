@@ -114,6 +114,25 @@ const config: ZudokuConfig = {
 
       return true;
     },
+    // Get all consumers (API key holders) for the authenticated user
+    getConsumers: async (context) => {
+      const serverUrl = process.env.ZUPLO_PUBLIC_SERVER_URL || import.meta.env.ZUPLO_SERVER_URL;
+      
+      const request = new Request(serverUrl + "/v1/developer/consumers", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const response = await fetch(await context.signRequest(request));
+
+      if (!response.ok) {
+        throw new Error(`Failed to get consumers: ${response.status} ${response.statusText}`);
+      }
+
+      return response.json();
+    },
   },
 };
 
